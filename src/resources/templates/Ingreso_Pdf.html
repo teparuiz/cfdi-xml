@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobante de Ingreso</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; }
+        .container { width: 90%; margin: 0 auto; }
+        .header, .footer { text-align: center; margin-bottom: 20px; }
+        .info { display: flex; justify-content: space-between; }
+        .table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .table, .table th, .table td { border: 1px solid black; }
+        .table th, .table td { padding: 5px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="__logo__" alt="Logo" width="150">
+            <h2>Factura de Ingreso</h2>
+        </div>
+        
+        <div class="info">
+            <div>
+                <strong>Emisor:</strong> __NombreEmisor__<br>
+                <strong>RFC:</strong> __RFCEmisor__<br>
+                <strong>Régimen Fiscal:</strong> __RegimenFiscalEmisor__<br>
+            </div>
+            <div>
+                <strong>Receptor:</strong> __NombreReceptor__<br>
+                <strong>RFC:</strong> __RFCReceptor__<br>
+                <strong>Domicilio Fiscal:</strong> __DomicilioFiscalReceptor__<br>
+            </div>
+        </div>
+        
+        <div class="info">
+            <div>
+                <strong>Folio:</strong> __SerieComprobante__-__FolioComprobante__<br>
+                <strong>Fecha:</strong> __FechaComprobante__<br>
+                <strong>Lugar de Expedición:</strong> __LugarExpedicionComprobante__<br>
+            </div>
+            <div>
+                <strong>Forma de Pago:</strong> __FormaPagoComprobante__<br>
+                <strong>Método de Pago:</strong> __MetodoPagoComprobante__<br>
+                <strong>Condiciones de Pago:</strong> __CondicionesPagoComprobante__<br>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Cantidad</th>
+                    <th>Descripción</th>
+                    <th>Precio Unitario</th>
+                    <th>Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                __TablaConceptos__
+            </tbody>
+        </table>
+
+        <div class="info">
+            <div>
+                <strong>Subtotal:</strong> __SubtotalComprobante__<br>
+                <strong>Descuento:</strong> __DescuentoComprobante__<br>
+            </div>
+            <div>
+                <strong>Impuestos:</strong> __ImpuestosComprobante__<br>
+                <strong>Total:</strong> __TotalComprobante__<br>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <strong>UUID:</strong> __UUIDComprobante__<br>
+            <strong>No. Certificado SAT:</strong> __NoCertificadoSAT__<br>
+            <strong>Fecha de Certificación:</strong> __FechaTimbradoComprobante__<br>
+            <strong>Sello Digital del CFDI:</strong> __SelloDigitalComprobante__</strong>
+            <strong>Cadena Original:</strong>
+            <pre>__CadenaOriginal__</pre>
+        </div>
+    </div>
+</body>
+</html>
