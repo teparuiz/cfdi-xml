@@ -1,4 +1,4 @@
-# PAQUETE CFDI SAT PARA NODEJS
+<!-- # PAQUETE CFDI SAT PARA NODEJS
 
 ## EN CONSTRUCCIÓN
 
@@ -897,4 +897,8 @@ catalogos.obtenerCatalogo(NombreCatalogo);
 - DerechosDePaso
 - TipoCarro
 - Contenedor
-- TipoTrafico
+- TipoTrafico -->
+
+
+Lo subí para no perder mis cambios, añadí complemento de pago clase y el index, ahora debo mejorar lo del pdf, añadir extración de CIF y también obtener los generadores por fuera
+
