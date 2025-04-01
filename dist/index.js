@@ -864,7 +864,6 @@ class ComplementoPago {
                 comprobanteElement.setAttribute("Sello", sello);
             }
             const serializer = new xmldom_1.XMLSerializer();
-            console.log(serializer.serializeToString(xmlDoc));
             return serializer.serializeToString(xmlDoc);
         });
     }

@@ -1101,8 +1101,6 @@ export class ComplementoPago {
     }
 
     const serializer = new XMLSerializer();
-
-    console.log(serializer.serializeToString(xmlDoc))
     return serializer.serializeToString(xmlDoc);
 }
 }
