@@ -1,9 +1,10 @@
-import { atributosInterface, atributosConceptoInterface, PDFInterface, catalogoResult, atributosCartaPorteInterface, ubicacionOrigenInterface, ubicacionDestinoInterface, mercanciasInterface, itemMercanciaInterface, documentacionAduaneraInterface, cantidadTransportaInterface, autotransporteInterface, identificacionVehicularInterface, segurosInterface, remolquesInterface, tipoFiguraInterface, partesTransporteInterface, domicilioInterface, pagoInterface } from "./interfaces/facturaInterfaces";
+import { atributosInterface, atributosConceptoInterface, PDFInterface, catalogoResult, atributosCartaPorteInterface, ubicacionOrigenInterface, ubicacionDestinoInterface, mercanciasInterface, itemMercanciaInterface, documentacionAduaneraInterface, cantidadTransportaInterface, autotransporteInterface, identificacionVehicularInterface, segurosInterface, remolquesInterface, tipoFiguraInterface, partesTransporteInterface, domicilioInterface, pagoInterface, relacionadoInterface } from "./interfaces/facturaInterfaces";
 export declare class FacturaCFDI {
     #private;
     constructor();
     certificado(cerStream: Buffer): void;
     esGlobal(periocidad: string | number, meses: string | number, anio: string | number): void;
+    crearRelacionados(tipoRelacion: string, doctosRelacionados: relacionadoInterface[]): void;
     crearSello(keyStream: Buffer, password: string): void;
     crearEmisor(rfc: string, nombre: string, regimenFiscal: string | number): void;
     crearReceptor(rfc: string, nombre: string, regimenFiscal: string | number, codigoPostal: string | number, usoCfdi: string): void;

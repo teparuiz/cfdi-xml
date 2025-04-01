@@ -22,7 +22,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-var _FacturaCFDI_instances, _FacturaCFDI_noCertificado, _FacturaCFDI_certificadoPem, _FacturaCFDI_llavePrivadaPem, _FacturaCFDI_emisor, _FacturaCFDI_receptor, _FacturaCFDI_isGlobal, _FacturaCFDI_conceptos, _FacturaCFDI_generarCadenaOrigen, _FacturaCFDI_resolveInclusions, _CartaPorte_instances, _CartaPorte_xml, _CartaPorte_regimenesAduaneros, _CartaPorte_ubicacionOrigen, _CartaPorte_ubicacionDestino, _CartaPorte_mercancias, _CartaPorte_conceptosMercancias, _CartaPorte_esAutotransporte, _CartaPorte_autotransporte, _CartaPorte_identificacionVehicular, _CartaPorte_seguros, _CartaPorte_remolques, _CartaPorte_tipoFigura, _CartaPorte_llavePrivadaPem, _CartaPorte_generarIdCCP, _CartaPorte_resolveInclusions, _CartaPorte_generarCadenaOrigen, _ComplementoPago_instances, _ComplementoPago_xml, _ComplementoPago_pago, _ComplementoPago_llavePrivadaPem, _ComplementoPago_resolveInclusions, _ComplementoPago_generarCadenaOrigen;
+var _FacturaCFDI_instances, _FacturaCFDI_noCertificado, _FacturaCFDI_certificadoPem, _FacturaCFDI_llavePrivadaPem, _FacturaCFDI_emisor, _FacturaCFDI_receptor, _FacturaCFDI_isGlobal, _FacturaCFDI_relacionados, _FacturaCFDI_conceptos, _FacturaCFDI_generarCadenaOrigen, _FacturaCFDI_resolveInclusions, _CartaPorte_instances, _CartaPorte_xml, _CartaPorte_regimenesAduaneros, _CartaPorte_ubicacionOrigen, _CartaPorte_ubicacionDestino, _CartaPorte_mercancias, _CartaPorte_conceptosMercancias, _CartaPorte_esAutotransporte, _CartaPorte_autotransporte, _CartaPorte_identificacionVehicular, _CartaPorte_seguros, _CartaPorte_remolques, _CartaPorte_tipoFigura, _CartaPorte_llavePrivadaPem, _CartaPorte_generarIdCCP, _CartaPorte_resolveInclusions, _CartaPorte_generarCadenaOrigen, _ComplementoPago_instances, _ComplementoPago_xml, _ComplementoPago_pago, _ComplementoPago_llavePrivadaPem, _ComplementoPago_resolveInclusions, _ComplementoPago_generarCadenaOrigen;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComplementoPago = exports.CartaPorte = exports.CatalogosSAT = exports.FacturaCFDI = void 0;
 const fs_1 = __importDefault(require("fs"));
@@ -47,6 +47,7 @@ class FacturaCFDI {
         _FacturaCFDI_emisor.set(this, void 0);
         _FacturaCFDI_receptor.set(this, void 0);
         _FacturaCFDI_isGlobal.set(this, void 0);
+        _FacturaCFDI_relacionados.set(this, void 0);
         _FacturaCFDI_conceptos.set(this, void 0);
         __classPrivateFieldSet(this, _FacturaCFDI_noCertificado, "", "f");
         __classPrivateFieldSet(this, _FacturaCFDI_certificadoPem, "", "f");
@@ -64,6 +65,10 @@ class FacturaCFDI {
             periocidad: "",
             meses: "",
             anio: "",
+        }, "f");
+        __classPrivateFieldSet(this, _FacturaCFDI_relacionados, {
+            TipoRelacion: "",
+            doctoRelacionados: [],
         }, "f");
         __classPrivateFieldSet(this, _FacturaCFDI_conceptos, [
             {
@@ -105,6 +110,10 @@ class FacturaCFDI {
         __classPrivateFieldGet(this, _FacturaCFDI_isGlobal, "f").meses = meses;
         __classPrivateFieldGet(this, _FacturaCFDI_isGlobal, "f").anio = anio;
     }
+    crearRelacionados(tipoRelacion, doctosRelacionados) {
+        __classPrivateFieldGet(this, _FacturaCFDI_relacionados, "f").TipoRelacion = tipoRelacion;
+        __classPrivateFieldGet(this, _FacturaCFDI_relacionados, "f").doctoRelacionados = doctosRelacionados;
+    }
     crearSello(keyStream, password) {
         // Convertir la llave privada DER a PEM
         try {
@@ -141,7 +150,7 @@ class FacturaCFDI {
             .replace("-----BEGIN CERTIFICATE-----", "")
             .replace("-----END CERTIFICATE-----", "")
             .replace(/(\r\n|\n|\r)/gm, "");
-        const xml = new ingreso_1.CFDIIngreso(atributos, Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_emisor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_receptor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_isGlobal, "f")), certificado, __classPrivateFieldGet(this, _FacturaCFDI_noCertificado, "f"), __classPrivateFieldGet(this, _FacturaCFDI_conceptos, "f"));
+        const xml = new ingreso_1.CFDIIngreso(atributos, Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_emisor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_receptor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_isGlobal, "f")), certificado, __classPrivateFieldGet(this, _FacturaCFDI_noCertificado, "f"), __classPrivateFieldGet(this, _FacturaCFDI_conceptos, "f"), __classPrivateFieldGet(this, _FacturaCFDI_relacionados, "f"));
         return xml.crearXMl();
     }
     generarXmlSellado(atributos) {
@@ -152,7 +161,7 @@ class FacturaCFDI {
                         .replace("-----BEGIN CERTIFICATE-----", "")
                         .replace("-----END CERTIFICATE-----", "")
                         .replace(/(\r\n|\n|\r)/gm, "");
-                    const xml = new ingreso_1.CFDIIngreso(atributos, Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_emisor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_receptor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_isGlobal, "f")), certificado, __classPrivateFieldGet(this, _FacturaCFDI_noCertificado, "f"), __classPrivateFieldGet(this, _FacturaCFDI_conceptos, "f"));
+                    const xml = new ingreso_1.CFDIIngreso(atributos, Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_emisor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_receptor, "f")), Object.assign({}, __classPrivateFieldGet(this, _FacturaCFDI_isGlobal, "f")), certificado, __classPrivateFieldGet(this, _FacturaCFDI_noCertificado, "f"), __classPrivateFieldGet(this, _FacturaCFDI_conceptos, "f"), __classPrivateFieldGet(this, _FacturaCFDI_relacionados, "f"));
                     const xmlSinSellar = xml.crearXMl();
                     let xmlSellado = xmlSinSellar;
                     if (__classPrivateFieldGet(this, _FacturaCFDI_llavePrivadaPem, "f") !== "") {
@@ -192,7 +201,7 @@ class FacturaCFDI {
     }
 }
 exports.FacturaCFDI = FacturaCFDI;
-_FacturaCFDI_noCertificado = new WeakMap(), _FacturaCFDI_certificadoPem = new WeakMap(), _FacturaCFDI_llavePrivadaPem = new WeakMap(), _FacturaCFDI_emisor = new WeakMap(), _FacturaCFDI_receptor = new WeakMap(), _FacturaCFDI_isGlobal = new WeakMap(), _FacturaCFDI_conceptos = new WeakMap(), _FacturaCFDI_instances = new WeakSet(), _FacturaCFDI_generarCadenaOrigen = function _FacturaCFDI_generarCadenaOrigen(xml) {
+_FacturaCFDI_noCertificado = new WeakMap(), _FacturaCFDI_certificadoPem = new WeakMap(), _FacturaCFDI_llavePrivadaPem = new WeakMap(), _FacturaCFDI_emisor = new WeakMap(), _FacturaCFDI_receptor = new WeakMap(), _FacturaCFDI_isGlobal = new WeakMap(), _FacturaCFDI_relacionados = new WeakMap(), _FacturaCFDI_conceptos = new WeakMap(), _FacturaCFDI_instances = new WeakSet(), _FacturaCFDI_generarCadenaOrigen = function _FacturaCFDI_generarCadenaOrigen(xml) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const cadenaOriginalXslt = __classPrivateFieldGet(this, _FacturaCFDI_instances, "m", _FacturaCFDI_resolveInclusions).call(this);

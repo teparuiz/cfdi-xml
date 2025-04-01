@@ -1,4 +1,4 @@
-import { atributosInterface, ReceptorInterface, EmisorInterface, atributosConceptoInterface, InvoiceGlobalInterface } from "../interfaces/facturaInterfaces";
+import { atributosInterface, ReceptorInterface, EmisorInterface, atributosConceptoInterface, InvoiceGlobalInterface, relacionadosInterface } from "../interfaces/facturaInterfaces";
 export declare class CFDIIngreso {
     atributos: atributosInterface;
     noCertificado: string;
@@ -21,7 +21,8 @@ export declare class CFDIIngreso {
         meses: string | number;
         anio: string | number;
     };
+    relacionados: relacionadosInterface;
     conceptos: atributosConceptoInterface[];
-    constructor(atributos: atributosInterface, emisor: EmisorInterface, receptor: ReceptorInterface, isGlobal: InvoiceGlobalInterface, certificado: string, noCertificado: string, conceptos: atributosConceptoInterface[]);
+    constructor(atributos: atributosInterface, emisor: EmisorInterface, receptor: ReceptorInterface, isGlobal: InvoiceGlobalInterface, certificado: string, noCertificado: string, conceptos: atributosConceptoInterface[], relacionados: relacionadosInterface);
     crearXMl(): string;
 }

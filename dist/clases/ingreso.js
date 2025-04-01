@@ -7,7 +7,7 @@ exports.CFDIIngreso = void 0;
 const xmlbuilder2_1 = require("xmlbuilder2");
 const moment_timezone_1 = __importDefault(require("moment-timezone"));
 class CFDIIngreso {
-    constructor(atributos, emisor, receptor, isGlobal, certificado, noCertificado, conceptos) {
+    constructor(atributos, emisor, receptor, isGlobal, certificado, noCertificado, conceptos, relacionados) {
         this.atributos = atributos;
         this.receptor = receptor;
         this.emisor = emisor;
@@ -15,6 +15,7 @@ class CFDIIngreso {
         this.certificado = certificado;
         this.noCertificado = noCertificado;
         this.conceptos = conceptos;
+        this.relacionados = relacionados;
     }
     crearXMl() {
         const date = this.atributos.Fecha ||
@@ -67,6 +68,14 @@ class CFDIIngreso {
             RegimenFiscalReceptor: this.receptor.RegimenFiscalReceptor,
             UsoCFDI: this.receptor.UsoCFDI,
         });
+        if (this.relacionados.TipoRelacion !== "") {
+            const relacionados = xml.ele("cfdi:Relacionados", { TipoRelacion: this.relacionados.TipoRelacion });
+            this.relacionados.doctoRelacionados.forEach((item) => {
+                relacionados.ele("cfdi:Relacionado", {
+                    UUID: item.UUID,
+                });
+            });
+        }
         const conceptos_ele = xml.ele("cfdi:Conceptos");
         let totalImpuestosTrasladados = 0;
         let totalImpuestosRetenidos = 0;
