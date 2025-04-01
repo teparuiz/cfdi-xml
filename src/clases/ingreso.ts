@@ -5,6 +5,7 @@ import {
   EmisorInterface,
   atributosConceptoInterface,
   InvoiceGlobalInterface,
+  relacionadosInterface
 } from "../interfaces/facturaInterfaces";
 import moment from "moment-timezone";
 export class CFDIIngreso {
@@ -25,6 +26,7 @@ export class CFDIIngreso {
     meses: string | number;
     anio: string | number;
   };
+  relacionados: relacionadosInterface;
   conceptos: atributosConceptoInterface[];
   constructor(
     atributos: atributosInterface,
@@ -33,7 +35,8 @@ export class CFDIIngreso {
     isGlobal: InvoiceGlobalInterface,
     certificado: string,
     noCertificado: string,
-    conceptos: atributosConceptoInterface[]
+    conceptos: atributosConceptoInterface[],
+    relacionados: relacionadosInterface,
   ) {
     this.atributos = atributos;
     this.receptor = receptor;
@@ -42,6 +45,7 @@ export class CFDIIngreso {
     this.certificado = certificado;
     this.noCertificado = noCertificado;
     this.conceptos = conceptos;
+    this.relacionados = relacionados;
   }
   crearXMl() {
     const date =
@@ -99,6 +103,15 @@ export class CFDIIngreso {
       RegimenFiscalReceptor: this.receptor.RegimenFiscalReceptor,
       UsoCFDI: this.receptor.UsoCFDI,
     });
+
+    if(this.relacionados.TipoRelacion !== "") {
+      const relacionados = xml.ele("cfdi:Relacionados", {TipoRelacion: this.relacionados.TipoRelacion});
+      this.relacionados.doctoRelacionados.forEach((item) => {
+        relacionados.ele("cfdi:Relacionado", {
+          UUID: item.UUID,
+        });
+      })
+    }
     const conceptos_ele = xml.ele("cfdi:Conceptos");
     let totalImpuestosTrasladados: number = 0;
     let totalImpuestosRetenidos: number = 0;

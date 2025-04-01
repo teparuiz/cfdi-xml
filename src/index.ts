@@ -18,7 +18,9 @@ import {
   tipoFiguraInterface,
   partesTransporteInterface,
   domicilioInterface,
-  pagoInterface
+  pagoInterface,
+  relacionadosInterface,
+  relacionadoInterface
 } from "./interfaces/facturaInterfaces";
 import fs from "fs";
 const forge = require("node-forge");
@@ -53,6 +55,7 @@ export class FacturaCFDI {
     anio: string | number;
   };
 
+  #relacionados: relacionadosInterface;
   #conceptos: atributosConceptoInterface[];
   constructor() {
     this.#noCertificado = "";
@@ -72,7 +75,10 @@ export class FacturaCFDI {
       meses: "",
       anio: "",
     };
-
+    this.#relacionados = {
+      TipoRelacion: "",
+      doctoRelacionados: [],
+    }
     this.#conceptos = [
       {
         ClaveProdServ: "",
@@ -115,6 +121,10 @@ export class FacturaCFDI {
     this.#isGlobal.periocidad = periocidad;
     this.#isGlobal.meses = meses;
     this.#isGlobal.anio = anio;
+  }
+  crearRelacionados(tipoRelacion: string, doctosRelacionados: relacionadoInterface[]) {
+    this.#relacionados.TipoRelacion = tipoRelacion;
+    this.#relacionados.doctoRelacionados = doctosRelacionados;
   }
   crearSello(keyStream: Buffer, password: string) {
     // Convertir la llave privada DER a PEM
@@ -164,7 +174,8 @@ export class FacturaCFDI {
       { ...this.#isGlobal },
       certificado,
       this.#noCertificado,
-      this.#conceptos
+      this.#conceptos,
+      this.#relacionados
     );
     return xml.crearXMl();
   }
@@ -182,7 +193,8 @@ export class FacturaCFDI {
           { ...this.#isGlobal },
           certificado,
           this.#noCertificado,
-          this.#conceptos
+          this.#conceptos,
+          this.#relacionados
         );
         const xmlSinSellar = xml.crearXMl();
         let xmlSellado = xmlSinSellar;

@@ -53,6 +53,15 @@ export interface atributosConceptoInterface {
   NoIdentificacion?: string | null;
   Retenciones?: RetencionesInterface[];
 }
+
+export interface relacionadosInterface {
+  TipoRelacion: string;
+  doctoRelacionados: relacionadoInterface[];
+}
+
+export interface relacionadoInterface {
+  UUID: string;
+}
 export interface InvoiceGlobalInterface {
   periocidad: string | number;
   meses: string | number;
