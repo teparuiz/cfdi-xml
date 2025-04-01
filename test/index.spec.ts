@@ -170,6 +170,7 @@ describe("Pago", () => {
       },
     ]);
 
+
     const generatedXml = factura.generarXml(attributes);
 
     const normalizeXml = (xml: string) => {

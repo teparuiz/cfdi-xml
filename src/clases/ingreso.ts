@@ -81,6 +81,14 @@ export class CFDIIngreso {
         Descuento: descuento
       }
     );
+    if(this.relacionados.TipoRelacion !== "") {
+      const relacionados = xml.ele("cfdi:CfdiRelacionados", {TipoRelacion: this.relacionados.TipoRelacion});
+      this.relacionados.doctoRelacionados.forEach((item) => {
+        relacionados.ele("cfdi:CfdiRelacionado", {
+          UUID: item.UUID,
+        });
+      })
+    }
     if (condicionesPago_cfdi) {
       xml.att("CondicionesDePago", condicionesPago_cfdi);
     }
@@ -103,15 +111,6 @@ export class CFDIIngreso {
       RegimenFiscalReceptor: this.receptor.RegimenFiscalReceptor,
       UsoCFDI: this.receptor.UsoCFDI,
     });
-
-    if(this.relacionados.TipoRelacion !== "") {
-      const relacionados = xml.ele("cfdi:Relacionados", {TipoRelacion: this.relacionados.TipoRelacion});
-      this.relacionados.doctoRelacionados.forEach((item) => {
-        relacionados.ele("cfdi:Relacionado", {
-          UUID: item.UUID,
-        });
-      })
-    }
     const conceptos_ele = xml.ele("cfdi:Conceptos");
     let totalImpuestosTrasladados: number = 0;
     let totalImpuestosRetenidos: number = 0;
@@ -122,8 +121,8 @@ export class CFDIIngreso {
         ClaveUnidad: item.ClaveUnidad,
         Unidad: item.Unidad,
         Descripcion: item.Descripcion,
-        ValorUnitario: parseFloat(item.ValorUnitario.toString()),
-        Importe: parseFloat(item.Importe.toString()), 
+        ValorUnitario: tipoComprobante_cfdi === "P" ? 0 : parseFloat(item.ValorUnitario.toString()).toFixed(2),
+        Importe: tipoComprobante_cfdi === "P" ? 0 : parseFloat(item.Importe.toString()).toFixed(2),
         ObjetoImp: item.ObjetoImp,
       });
       if (item.NoIdentificacion) {
