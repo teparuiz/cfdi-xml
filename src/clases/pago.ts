@@ -176,7 +176,7 @@ const xmlTimbrado = xmlDoc.getElementsByTagName("tfd:TimbreFiscalDigital");
               const traslado_p = xmlDoc.createElement("pago20:TrasladoP");
 
               traslado_p.setAttribute("ImpuestoP", item.ImpuestoDR.toString());
-              traslado_p.setAttribute("ImporteP", item.ImporteDR.toFixed(6).toString());
+              traslado_p.setAttribute("ImporteP", item.ImporteDR.toFixed(2).toString());
               traslado_p.setAttribute(
                 "TipoFactorP",
                 item.TipoFactorDR.toString()

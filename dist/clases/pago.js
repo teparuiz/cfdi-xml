@@ -136,7 +136,7 @@ class Pago {
                                 totalesNode.setAttribute("TotalTrasladosImpuestoIVA16", TotalTrasladosImpuestoIVA16.toFixed(2).toString());
                                 const traslado_p = xmlDoc.createElement("pago20:TrasladoP");
                                 traslado_p.setAttribute("ImpuestoP", item.ImpuestoDR.toString());
-                                traslado_p.setAttribute("ImporteP", item.ImporteDR.toFixed(6).toString());
+                                traslado_p.setAttribute("ImporteP", item.ImporteDR.toFixed(2).toString());
                                 traslado_p.setAttribute("TipoFactorP", item.TipoFactorDR.toString());
                                 traslado_p.setAttribute("TasaOCuotaP", item.TasaOCuotaDR.toFixed(6).toString());
                                 traslado_p.setAttribute("BaseP", item.BaseDR.toFixed(2).toString());
