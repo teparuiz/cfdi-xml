@@ -306,44 +306,16 @@ export interface doctoRelacionadoInterface {
   ImpPagado:  number;
   ImpSaldoInsoluto: number;
   ObjetoImpDR: string | number;
-  ImpuestosDR: impuestosDRInterface[];
+  ImpuestosDR?: ImpuestosDRConditional;
 }
 
-export interface trasladoDRInterface {
-  BaseDR: string | number;
-  ImpuestoDR: string | number;
-  TipoFactorDR: string;
-  TasaOCuotaDR: string | number;
-  ImporteDR: string | number;
-}
-
-export interface trasladoPInterface {
-  BaseP: string | number;
-  ImpuestoP: string | number;
-  TipoFactorP: string;
-  TasaOCuotaP: string |number;
-  ImporteP: string | number;
-}
+type ImpuestosDRConditional = doctoRelacionadoInterface["ObjetoImpDR"] extends '01' | '03' ? null : impuestosDRInterface[];
 
 export interface impuestosDRInterface {
-  Tipo: string;
-  BaseDR: number;
-  ImpuestoDR: string | number;
-  TipoFactorDR: string;
-  TasaOCuotaDR: number;
-  ImporteDR: number;
-}
- 
-
-export interface TrasladoConsolidado {
-  ImpuestoP: string;
-  TipoFactorP: string;
-  TasaOCuotaP: string;
-  BaseP: number;
-  ImporteP: number;
-}
-
-export interface RetencionConsolidada {
-  ImpuestoP: string;
-  ImporteP: number;
+  Tipo?: string;
+  BaseDR?: number;
+  ImpuestoDR?: string | number;
+  TipoFactorDR?: string;
+  TasaOCuotaDR?: number;
+  ImporteDR?: number;
 }
