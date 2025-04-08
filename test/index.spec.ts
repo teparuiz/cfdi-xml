@@ -414,7 +414,7 @@ describe("Pago", () => {
     const payments = [
       {
         payment_form: "03",
-        total_amount: 6950,
+        total_amount: 6960,
         payment_date: "2017-05-05T20:55:33.468Z",
         payment_currency: "MXN",
         payment_exchange: 1,
@@ -422,7 +422,7 @@ describe("Pago", () => {
           {
             uuid: "b7c8d2bf-cb4e-4f84-af89-c68b6731206a",
             amount: 2320,
-            currency_related_documents: "MXN",
+            currency_payment_documents: "MXN",
             parciality: 1,
             equality: 1,
             last_balance: 6960,
@@ -440,7 +440,7 @@ describe("Pago", () => {
           {
             uuid: "b7c8d2bf-cb4e-4f84-af89-c68b6731206a",
             amount: 4640,
-            currency_related_documents: "MXN",
+            currency_payment_documents: "MXN",
             parciality: 2,
             equality: 1,
             last_balance: 4640,
@@ -467,7 +467,7 @@ describe("Pago", () => {
       doctoRelacionado: item.payment_related_documents.map((doc) => {
         const baseDoc = {
           IdDocumento: doc.uuid,
-          MonedaDR: doc.currency_related_documents,
+          MonedaDR: doc.currency_payment_documents,
           NumParcialidad: doc.parciality,
           EquivalenciaDR: 1,
           ImpSaldoAnt: doc.last_balance,
@@ -502,6 +502,7 @@ describe("Pago", () => {
       }),
     }));
 
+    console.log(addPayments)
     const pago20 = new ComplementoPago(expectedXml, addPayments);
 
     pago20.crearSello(keyStream, password);
@@ -515,7 +516,7 @@ describe("Pago", () => {
     const payments = [
       {
         payment_form: "03",
-        total_amount: 6950,
+        total_amount: 6960,
         payment_date: "2017-05-05T20:55:33.468Z",
         payment_currency: "MXN",
         payment_exchange: 1,
