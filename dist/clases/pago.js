@@ -153,12 +153,12 @@ class Pago {
     crearNodoRetencionDR(xmlDoc, impuesto) {
         var _a, _b, _c, _d, _e;
         const retencionDR = xmlDoc.createElement("pago20:RetencionDR");
-        retencionDR.setAttribute("BaseDR", ((_a = impuesto.BaseDR) === null || _a === void 0 ? void 0 : _a.toFixed(2)) || "0.000000");
+        retencionDR.setAttribute("BaseDR", ((_a = impuesto.BaseDR) === null || _a === void 0 ? void 0 : _a.toFixed(2)) || "0.00");
         retencionDR.setAttribute("ImpuestoDR", ((_b = impuesto.ImpuestoDR) === null || _b === void 0 ? void 0 : _b.toString()) || "");
         retencionDR.setAttribute("TipoFactorDR", ((_c = impuesto.TipoFactorDR) === null || _c === void 0 ? void 0 : _c.toString()) || "");
         if (impuesto.TipoFactorDR !== "Exento") {
             retencionDR.setAttribute("TasaOCuotaDR", ((_d = impuesto.TasaOCuotaDR) === null || _d === void 0 ? void 0 : _d.toFixed(6)) || "0.000000");
-            retencionDR.setAttribute("ImporteDR", ((_e = impuesto.ImporteDR) === null || _e === void 0 ? void 0 : _e.toFixed(2)) || "0.000000");
+            retencionDR.setAttribute("ImporteDR", ((_e = impuesto.ImporteDR) === null || _e === void 0 ? void 0 : _e.toFixed(2)) || "0.00");
         }
         return retencionDR;
     }
@@ -189,11 +189,11 @@ class Pago {
     }
     agregarImpuestosPago(xmlDoc, pagoElement, totales, doctosRelacionados) {
         const impuestosPago = xmlDoc.createElement("pago20:ImpuestosP");
-        pagoElement.appendChild(impuestosPago);
         // Determinar si debemos mostrar detalles individuales o sumarizados
         const mostrarDetallesIndividuales = doctosRelacionados.length === 1;
         // Procesar traslados
         if (totales.TotalTrasladosBaseIVA16 > 0 || totales.TotalTrasladosBaseIVAExento > 0) {
+            pagoElement.appendChild(impuestosPago);
             const trasladosP = xmlDoc.createElement("pago20:TrasladosP");
             impuestosPago.appendChild(trasladosP);
             if (mostrarDetallesIndividuales) {

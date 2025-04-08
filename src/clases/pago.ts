@@ -165,13 +165,13 @@ private crearNodoTrasladoDR(xmlDoc: Document, impuesto: impuestosDRInterface): E
 
 private crearNodoRetencionDR(xmlDoc: Document, impuesto: impuestosDRInterface): Element {
   const retencionDR = xmlDoc.createElement("pago20:RetencionDR");
-  retencionDR.setAttribute("BaseDR", impuesto.BaseDR?.toFixed(2) || "0.000000");
+  retencionDR.setAttribute("BaseDR", impuesto.BaseDR?.toFixed(2) || "0.00");
   retencionDR.setAttribute("ImpuestoDR", impuesto.ImpuestoDR?.toString() || "");
   retencionDR.setAttribute("TipoFactorDR", impuesto.TipoFactorDR?.toString() || "");
   
   if (impuesto.TipoFactorDR !== "Exento") {
       retencionDR.setAttribute("TasaOCuotaDR", impuesto.TasaOCuotaDR?.toFixed(6) || "0.000000");
-      retencionDR.setAttribute("ImporteDR", impuesto.ImporteDR?.toFixed(2) || "0.000000");
+      retencionDR.setAttribute("ImporteDR", impuesto.ImporteDR?.toFixed(2) || "0.00");
   }
   
   return retencionDR;
@@ -199,13 +199,13 @@ private actualizarTotalesRetenciones(impuesto: impuestosDRInterface, totales: an
 
 private agregarImpuestosPago(xmlDoc: Document, pagoElement: Element, totales: any, doctosRelacionados: doctoRelacionadoInterface[]) {
   const impuestosPago = xmlDoc.createElement("pago20:ImpuestosP");
-  pagoElement.appendChild(impuestosPago);
 
   // Determinar si debemos mostrar detalles individuales o sumarizados
   const mostrarDetallesIndividuales = doctosRelacionados.length === 1;
   
   // Procesar traslados
   if (totales.TotalTrasladosBaseIVA16 > 0 || totales.TotalTrasladosBaseIVAExento > 0) {
+    pagoElement.appendChild(impuestosPago);
       const trasladosP = xmlDoc.createElement("pago20:TrasladosP");
       impuestosPago.appendChild(trasladosP);
 
