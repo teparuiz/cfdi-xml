@@ -900,5 +900,37 @@ catalogos.obtenerCatalogo(NombreCatalogo);
 - TipoTrafico -->
 
 
-Lo subí para no perder mis cambios, añadí complemento de pago clase y el index, ahora debo mejorar lo del pdf, añadir extración de CIF y también obtener los generadores por fuera
+# Facturas tipo P con `cfdi-node-js`
+
+## Contexto
+La librería **`cfdi-node-js`** no soporta de manera nativa la creación de **facturas tipo P (Pago)**.  
+Para solventar esta limitación, se realiza una modificación directa en la librería y se conserva mediante la herramienta **`patch-package`**, lo que permite mantener la funcionalidad incluso después de reinstalar dependencias.
+
+---
+
+## Flujo de trabajo
+
+### 1. Modificar la librería `cfdi-node-js`
+- Identificar los archivos necesarios para habilitar el soporte de facturas tipo P.  
+- Realizar los cambios directamente en el código fuente de la librería dentro de: node_modules/cfdi-node-js
+
+### 2. Generar archivos de producción
+- Una vez aplicada la modificación, construir o generar los archivos de producción correspondientes.  
+- Copiar los archivos resultantes dentro de la carpeta de la librería `cfdi-node-js`.
+
+### 3. Crear el parche con `patch-package`
+- Con los cambios ya aplicados, ejecutar:
+```bash
+npx patch-package cfdi-node-js
+```
+Esto generará un archivo dentro de la carpeta:
+``` bash 
+patches/cfdi-node-js+<versión>.patch
+```
+
+### 4. Aplicación automática del parche
+
+Cada vez que se ejecute npm install o yarn install, el postinstall de patch-package aplicará automáticamente el parche.
+
+Esto asegura que los cambios permanezcan activos sin necesidad de modificar manualmente la librería en futuras instalaciones
 
