@@ -199,9 +199,11 @@ export class FacturaCFDI {
         const xmlSinSellar = xml.crearXMl();
         let xmlSellado = xmlSinSellar;
         if (this.#llavePrivadaPem !== "") {
+          console.time("generarCadenaOrigen");
           const selloCadenaOriginal = await this.#generarCadenaOrigen(
             xmlSinSellar
           );
+          console.timeEnd("generarCadenaOrigen");
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(
             xmlSinSellar,
@@ -225,17 +227,30 @@ export class FacturaCFDI {
       throw error;
     }
   }
+  formatMemoryUsage(memory: NodeJS.MemoryUsage): string {
+    return `Heap: ${(memory.heapUsed / 1024 / 1024).toFixed(2)}MB (Total: ${(memory.heapTotal / 1024 / 1024).toFixed(2)}MB) - RSS: ${(memory.rss / 1024 / 1024).toFixed(2)}MB`; 
+  }
+  
   async #generarCadenaOrigen(xml: string) {
+    console.log('\n[Inicio generarCadenaOrigen]');
+    console.time('Tiempo total generarCadenaOrigen');
+    console.log('Memoria inicial:', this.formatMemoryUsage(process.memoryUsage()));
+  
     try {
+      console.time('Tiempo resolveInclusions');
       const cadenaOriginalXslt = this.#resolveInclusions();
+      console.timeEnd('Tiempo resolveInclusions');
+      console.log('Memoria post resolveInclusions:', this.formatMemoryUsage(process.memoryUsage()));
+  
+      console.time('Tiempo transformación SaxonJS');
       let result = SaxonJS.XPath.evaluate(
         `transform(
-        map {
-          'source-node' : parse-xml-fragment($xml),
-          'stylesheet-text' : $xslt,
-          'delivery-format' : 'serialized'
+          map {
+            'source-node' : parse-xml-fragment($xml),
+            'stylesheet-text' : $xslt,
+            'delivery-format' : 'serialized'
           }
-      )?output`,
+        )?output`,
         [],
         {
           params: {
@@ -244,17 +259,27 @@ export class FacturaCFDI {
           },
         }
       );
-
+      console.timeEnd('Tiempo transformación SaxonJS');
+      console.log('Memoria post transformación:', this.formatMemoryUsage(process.memoryUsage()));
+  
+      console.time('sellado');
       const sign = crypto.createSign("SHA256");
       sign.update(result);
       sign.end();
       const signature = sign.sign(this.#llavePrivadaPem, "base64");
+      console.timeEnd('sellado');
+      console.log('Memoria post sellado:', this.formatMemoryUsage(process.memoryUsage()));
+  
+      console.timeEnd('Tiempo total generarCadenaOrigen');
       return signature;
     } catch (error) {
+      console.error('Error durante generación:', error);
       throw error;
     }
   }
+
   #resolveInclusions() {
+    console.time("Tiempo resolveInclusions");
     const basePath = path.resolve(__dirname, "resources", "xslt");
     const xsltFile = path.resolve(basePath, "./cadenaoriginal_4_0.xslt");
     const xsltContent = fs.readFileSync(xsltFile, "utf8");
@@ -320,6 +345,8 @@ export class FacturaCFDI {
       }
     });
     const result = new XMLSerializer().serializeToString(doc);
+    console.log('Memory usage:', process.memoryUsage());
+    console.timeEnd("Tiempo resolveInclusions");
     return result;
   }
   async generarPDF(params: PDFInterface) {

@@ -2,3 +2,5 @@ node_modules
 
 test/*.cer
 test/*.key
+
+.DS_STORE
